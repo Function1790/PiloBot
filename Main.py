@@ -9,8 +9,8 @@ import json as j
 import os
 
 #Variable
-client=Bot(command_prefix="$")
-token="Type Token"
+client=Bot(command_prefix="$", intents=Intents.all())
+token="NzQ3MzQ4Njk0ODk4MDQ5MDg0.GM4lhz.eW4KAM9mLuu737cJ6YjBc0SjNzyvgH5CdpKI4s"
 Maker=462920963768582145
 pilo_uid=847112363081072650
 folder="DataBase\\"
@@ -237,13 +237,13 @@ async def on_message(msg):
             await msg.channel.send("누가 절 부르셨나요??")
         
         #Command
-        if(cmd=="$help"):
+        if(cmd==";help"):
             embed=Embed(title="PILO",color=0x6BA6FF)
             embed.add_field(name="$info",value=f"당신의 데이터를 출력합니다.",inline=False)
             embed.add_field(name="$buy",value=f"주식을 삽니다.",inline=False)
             embed.add_field(name="$sell",value=f"주식을 팝니다.",inline=False)
             await msg.channel.send(embed=embed)
-        elif(cmd=="$info"):
+        elif(cmd==";info"):
             embed=Embed(title="INFO",color=0xC19CF5)
             embed.add_field(name="Name",value=f"**{name}**",inline=False)
             embed.add_field(name="Money",value=f"**{user[num]['money']}{unit}**",inline=False)
@@ -252,9 +252,8 @@ async def on_message(msg):
                     if(j["uid"]==uid):
                         embed.add_field(name=f"{i.name}",value=f"**Count** : {j['count']}\n**Cost** : {i.cost}{unit}",inline=True)
                         break
-            embed.set_thumbnail(url=msg.author.avatar_url)
             await msg.channel.send(embed=embed)
-        elif(cmd=="$data" and host):
+        elif(cmd==";data" and host):
             embed=Embed(title="USER DATA",color=0xF3AAFF)
             for i in user:
                 string=f"**Money** : {i['money']}{unit}"
@@ -265,17 +264,16 @@ async def on_message(msg):
                             break
                 embed.add_field(name=f"[{i['name']}]",value=string,inline=True)
             await msg.channel.send(embed=embed)
-        elif(cmd=="$show"):
+        elif(cmd==";show"):
             embed=Embed(title="STOCK",color=0xF4FF99)
             for i in stock:
                 embed.add_field(name=f"{i.name}",value=f"**Cost** : {i.cost}{unit}",inline=True)
             embed.add_field(name=f"Cycle",value=f"{cycle-tick}s",inline=False)
             await msg.channel.send(embed=embed)
-               
         #Arg Command
         if(arg!=None):
-            if(cmd=="$stock"):
-                if(arg.find("-host")!=-1 and host):#Host
+            if(cmd==";stock"):
+                if(arg.find("-host")!=-1):#Host
                     name=argSplit(arg, "name:")
                     if(arg.find("-help")!=-1 or name==""):
                         await msg.channel.send("**사용법** : $stock -host -[create/delete] name:[str] cost:[num]")
@@ -316,7 +314,7 @@ async def on_message(msg):
                             except Exception:
                                 log("Error Stock",f"Exception in deleting {name}'")
                                 await msg.channel.send(f"주식을 삭제하는중 오류가 났습니다...")                        
-            if(cmd=="$buy"):
+            if(cmd==";buy"):
                 name=argSplit(arg, "name:")
                 count=argSplit(arg, "count:")
                 stock_num=findStock(name)
@@ -355,7 +353,7 @@ async def on_message(msg):
                                     await msg.channel.send(f"주식 '{name}'을 {count}개 샀습니다! [남은 돈:{user[num]['money']}{unit}]")
                                 else:
                                     await msg.channel.send(f"주식 '{name}'을 사는것을 실패했어요. ToT")
-            elif(cmd=="$sell"):
+            elif(cmd==";sell"):
                 name=argSplit(arg, "name:")
                 count=argSplit(arg, "count:")
                 stock_num=findStock(name)
@@ -392,7 +390,7 @@ async def on_message(msg):
                         else:
                             user[num]['money']+=count*stock[stock_num].cost
                             await msg.channel.send(f"주식 '{name}'을 {count}개 팔았습니다! [남은 돈:{user[num]['money']}{unit}]")
-            if(cmd=="$modify" and host): 
+            if(cmd==";modify" and host): 
                 if(arg.find("-money")!=-1):
                     target_name=argSplit(arg,"name:")
                     target_value=argSplit(arg,"value:")
