@@ -10,7 +10,7 @@ import os
 
 #Variable
 client=Bot(command_prefix="$", intents=Intents.all())
-token="NzQ3MzQ4Njk0ODk4MDQ5MDg0.GM4lhz.eW4KAM9mLuu737cJ6YjBc0SjNzyvgH5CdpKI4s"
+token="s"
 Maker=462920963768582145
 pilo_uid=847112363081072650
 folder="DataBase\\"
